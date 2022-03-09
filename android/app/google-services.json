@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "773827266547",
+    "project_id": "projectm-89911",
+    "storage_bucket": "projectm-89911.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773827266547:android:19f4e3e0e8e5fb6488b486",
+        "android_client_info": {
+          "package_name": "com.dreamtres.project_m"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773827266547-4vgl33t4u6h0u1doet31uds3ms867bfs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDv_uqvX0RiWTLcmBlxxuldttqrJWZurLk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773827266547-4vgl33t4u6h0u1doet31uds3ms867bfs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
