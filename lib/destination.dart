@@ -18,7 +18,7 @@ class _DestinationState extends State<Destination> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text(
-                'Top Destinations',
+                'Top Destination',
                 style: TextStyle(
                   fontSize: 22.0,
                   fontWeight: FontWeight.bold,
