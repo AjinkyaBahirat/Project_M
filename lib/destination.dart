@@ -40,10 +40,6 @@ class _DestinationState extends State<Destination> {
             ],
           ),
         ),
-        Container(
-          height: 300.0,
-          color: Colors.blue,
-        ),
       ],
     );
   }
