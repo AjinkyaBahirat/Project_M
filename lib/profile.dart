@@ -3,6 +3,7 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:project_m_new/editProfile.dart';
 import 'package:project_m_new/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -99,19 +100,32 @@ class _ProfileState extends State<Profile> {
             child: ListView(
               // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
-                Card(
-                  child: ListTile(
-                    leading: Icon(Icons.edit),
-                    title: Text("Update Profile", style: TextStyle( fontFamily: 'Montserrat', fontSize: 15.0),textAlign: TextAlign.center,),
+                GestureDetector(
+                  onTap: () {
+                     Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                 EditProfile()));
+                  },
+                  child: Card(
+                    elevation: 5,
+                    child: ListTile(
+                      leading: Icon(Icons.edit),
+                      trailing: Icon(Icons.navigate_next),
+                      title: Text("Update Profile", style: TextStyle( fontFamily: 'Montserrat', fontSize: 15.0),),
+                    ),
                   ),
                 ),
                 const SizedBox(
                   height: 10.0,
                 ),
                 Card(
+                  elevation: 5,
                   child: ListTile(
                     leading: Icon(Icons.group),
-                    title: Text("Friend List", style: TextStyle( fontFamily: 'Montserrat', fontSize: 15.0),textAlign: TextAlign.center,),
+                    trailing: Icon(Icons.navigate_next),
+                    title: Text("Friend List", style: TextStyle( fontFamily: 'Montserrat', fontSize: 15.0),),
                   ),
                 ),
               ],
