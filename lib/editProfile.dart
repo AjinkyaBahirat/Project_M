@@ -1,17 +1,56 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names, avoid_print, unused_local_variable
+
+import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:project_m_new/userData.dart';
 
-class EditProfile extends StatelessWidget {
-   EditProfile({ Key? key }) : super(key: key);  
-  bool isObsecurePassword = true;
+class EditProfile extends StatefulWidget {
+  EditProfile({ Key? key }) : super(key: key);  
+
+  @override
+  State<EditProfile> createState() => _EditProfileState();
+}
+
+class _EditProfileState extends State<EditProfile> {
+  final userRef = FirebaseDatabase.instance.ref().child("Users");
+
+  final _auth = FirebaseAuth.instance;
+  var user = FirebaseAuth.instance.currentUser;
+  String name="",mobile="",email="",id="";
+  @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+    data();
+  }
+
+  void data()async{
+    Query query = userRef.orderByChild("Name").equalTo(user?.displayName);
+    DataSnapshot event = await query.get();
+    Map map = event.children.first.value as Map;
+    //print(map['Name']);
+    setState(() {
+      name = map['Name'];
+      id = map['Id'];
+      email = map['Email'];
+      mobile = map['MobileNumber'];
+    });
+  }
+
+  
+
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text("Edit Profile"),
         leading: IconButton(
-          // ignore: prefer_const_constructors
           icon: Icon(
             Icons.arrow_back, 
             color: Colors.white,
@@ -75,11 +114,10 @@ class EditProfile extends StatelessWidget {
                   ],
                 ),
               ),
-              SizedBox(height: 30),
-              BuildTextField("Name", "Name"),
-              BuildTextField("Email", "Email"),
-              BuildTextField("Mobile Number", "Mobile Number"),
-              SizedBox(height: 30),
+              SizedBox(height: 20,),
+              BuildTextField("Name", name),
+              BuildTextField("Email", email),
+              BuildTextField("MobileNumber", mobile),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -119,6 +157,7 @@ class EditProfile extends StatelessWidget {
         ),
     );
   }
+
     Widget BuildTextField(String label, String inputtype){
     return Padding(
       padding: EdgeInsets.only(bottom: 30),
