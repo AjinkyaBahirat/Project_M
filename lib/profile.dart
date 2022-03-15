@@ -56,7 +56,7 @@ class _ProfileState extends State<Profile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     GestureDetector(
-                      onTap: () async{
+                      onTap: () {
                       
                       },
                       child: CircleAvatar(
@@ -97,6 +97,7 @@ class _ProfileState extends State<Profile> {
           Container(
             width: double.infinity,
             height: 300.0,
+            padding: EdgeInsets.all(10.0),
             child: ListView(
               // ignore: prefer_const_literals_to_create_immutables
               children: <Widget>[
