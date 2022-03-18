@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_const_constructors, non_constant_identifier_names, avoid_print, unused_local_variable
 
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:firebase_database/ui/firebase_animated_list.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:project_m_new/userData.dart';
 
@@ -19,6 +22,8 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   final userRef = FirebaseDatabase.instance.ref().child("Users");
+  final picker = ImagePicker();
+  String _imageFile='';
 
   final _auth = FirebaseAuth.instance;
   var user = FirebaseAuth.instance.currentUser;
@@ -26,11 +31,27 @@ class _EditProfileState extends State<EditProfile> {
   String updatedName="",updatedMobile="",updatedEmail="";
   bool showSpinner = false;
   bool editname=false,editemail=false,editmobile=false;
+  var url="";
   @override
   void initState(){
     // TODO: implement initState
     super.initState();
+    if(user?.photoURL==null){
+      url = "https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_960_720.png";
+    }
+    else{
+      url = "${user?.photoURL}";
+    }
     data();
+  }
+
+  Future pickImage() async {
+    final pickedFile = await picker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = pickedFile?.path as String;
+    });
+    uploadImage(context);
   }
 
   void data(){
@@ -52,6 +73,18 @@ class _EditProfileState extends State<EditProfile> {
     });
   }
 
+Future uploadImage(BuildContext context) async{
+  String? imgName = user?.displayName.toString();
+  Reference reference = FirebaseStorage.instance.ref().child(imgName!);
+  UploadTask task =  reference.putFile(File(_imageFile));
+  var imgURL = await (await task).ref.getDownloadURL();
+  print(imgURL);
+  user?.updatePhotoURL(imgURL).whenComplete(() => {
+    userRef.child(id).update({
+      "ImageURL": imgURL,
+    })
+  });
+}
   
 
   
@@ -78,6 +111,7 @@ class _EditProfileState extends State<EditProfile> {
           child: GestureDetector(
             onTap: () {
               FocusScope.of(context).unfocus();
+               pickImage();
             },
             child: ListView(
               children: [
@@ -100,7 +134,7 @@ class _EditProfileState extends State<EditProfile> {
                           // ignore: prefer_const_constructors
                           image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: const NetworkImage("https://cdn.pixabay.com/photo/2020/07/01/12/58/icon-5359553_960_720.png") 
+                            image: _imageFile.isEmpty? NetworkImage(url) : FileImage(File(_imageFile)) as ImageProvider, 
                             ),
                         ),
                       ),
