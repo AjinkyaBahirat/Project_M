@@ -55,21 +55,32 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   void data(){
-    userRef.onValue.listen((event) {
-      final data1 =  Map<String, dynamic>.from(event.snapshot.value as Map).forEach((key, value) { 
-        final map =  Map<String,dynamic>.from(value as Map);
-        if(map['Name']==user?.displayName.toString()){
-          print(map['Name']);
-          print(map['Email']);
-          print(map['MobileNumber']);
-          setState(() {
-            name = map['Name'];
-            email = map['Email'];
-            mobile = map['MobileNumber'];
-            id = map['Id'];
+    // userRef.onValue.listen((event) {
+    //   final data1 =  Map<String, dynamic>.from(event.snapshot.value as Map).forEach((key, value) { 
+    //     final map =  Map<String,dynamic>.from(value as Map);
+    //     if(map['Name']==user?.displayName.toString()){
+    //       print(map['Name']);
+    //       print(map['Email']);
+    //       print(map['MobileNumber']);
+    //       setState(() {
+    //         name = map['Name'];
+    //         email = map['Email'];
+    //         mobile = map['MobileNumber'];
+    //         id = map['Id'];
+    //       });
+    //     }
+    //   });
+    // });
+
+    Query query = userRef.orderByChild("Name").equalTo(user?.displayName.toString());
+    query.onValue.listen((event) {
+      final data = Map<String,dynamic>.from(event.snapshot.children.first.value as Map);
+      setState(() {
+            name = data['Name'];
+            email = data['Email'];
+            mobile = data['MobileNumber'];
+            id = data['Id'];
           });
-        }
-      });
     });
   }
 
